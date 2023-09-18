@@ -9,5 +9,5 @@ export async function singInPost(req: Request, res: Response) {
 
   console.log(result);
 
-  return res.status(HttpStatus.OK).send(result);
+  return res.status(httpStatus.OK).send(result);
 }
