@@ -58,6 +58,12 @@ export function handleApplicationErrors(
     return res.status(httpStatus.BAD_REQUEST).send(err.message);
   }
 
+  if (err.name === 'PaymentRequired') {
+    return res.status(httpStatus.PAYMENT_REQUIRED).send({
+      message: err.message,
+    });
+  }
+
   if (err.hasOwnProperty('status') && err.name === 'RequestError') {
     return res.status((err as RequestError).status).send({
       message: err.message,
@@ -65,7 +71,6 @@ export function handleApplicationErrors(
   }
 
   /* eslint-disable-next-line no-console */
-  console.error(err);
   res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
     error: 'InternalServerError',
     message: 'Internal Server Error',
