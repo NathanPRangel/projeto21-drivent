@@ -58,10 +58,12 @@ export function handleApplicationErrors(
     return res.status(httpStatus.BAD_REQUEST).send(err.message);
   }
 
-  if (err.name === 'PaymentRequired') {
-    return res.status(httpStatus.PAYMENT_REQUIRED).send({
-      message: err.message,
-    });
+  if (err.name === 'ForbiddenError') {
+    return res.status(httpStatus.FORBIDDEN).send(err.message);
+  }
+
+  if (err.name === 'CannotListHotelsError') {
+    return res.status(httpStatus.PAYMENT_REQUIRED).send(err.message);
   }
 
   if (err.hasOwnProperty('status') && err.name === 'RequestError') {
@@ -70,7 +72,10 @@ export function handleApplicationErrors(
     });
   }
 
+  console.log(err);
+
   /* eslint-disable-next-line no-console */
+  console.error(err);
   res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
     error: 'InternalServerError',
     message: 'Internal Server Error',
